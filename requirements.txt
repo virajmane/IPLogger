@@ -2,4 +2,5 @@ Flask
 gunicorn
 requests
 flask-cors
-sqlite3
+sqlite
+pysqlite
