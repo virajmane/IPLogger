@@ -2,7 +2,21 @@ from flask import Flask, jsonify, request, redirect, url_for, _request_ctx_stack
 import requests
 import random
 import string
-import sqlite3 as sql
+import pyrebase
+import os
+
+conf = {
+    "apiKey": os.environ.get('apiKey'),
+    "authDomain": os.environ.get('authDomain'),
+    "databaseURL": os.environ.get('databaseURL'),
+    "projectId": os.environ.get('projectId'),
+    "storageBucket": os.environ.get('storageBucket'),
+    "messagingSenderId": os.environ.get('messagingSenderId'),
+    "appId": os.environ.get('appId'),
+    "measurementId": os.environ.get('measurementId')
+  }
+firebase = pyrebase.initialize_app(conf)
+db = firebase.database()
 
 app = Flask(__name__)
 @app.route("/")
@@ -24,23 +38,16 @@ def index(abbr):
   os = usr_agnt.split("(")[1].split(")")[0].split(";")[1]
   device = usr_agnt.split("(")[1].split(")")[0].split(";")[2]
   ip_url = "http://ip-api.com/json/"+ ip[0]['ip'].split(",")[0]
-  ip_info = requests.get(ip_url)
-  result = {"ip":ip[0]['ip'], "ip_info": ip_info.text, "family":family, "device": device, "os":os, "platform":platform, "browser":browser, "version":version, "user_agent":usr_agnt}
+  ip_info = requests.get(ip_url).json()
+  result = {"ip":ip[0]['ip'], "ip_info": ip_info, "family":family, "device": device, "os":os, "platform":platform, "browser":browser, "version":version, "user_agent":usr_agnt}
   a = abbr
-  with sql.connect("database.db") as con:
-    cur = con.cursor()
-    cur.execute("UPDATE iplogger SET track=? where abbr=?",(str(result),str(a)))
-    con.commit()
-  with sql.connect("database.db") as con:
-    cur = con.cursor()
-    cur.execute('SELECT url FROM iplogger where abbr=?',[a])
-    link = cur.fetchall();
-    con.commit()
-    link1 = str(link[0][0])
-    if "http" not in link1:
-      final = "https://"+str(link1)
-    else:
-      final = link1
+  db.child(a).update({"track": result})
+  user = db.child(a).get()
+  link1 = user.val()["original_url"]
+  if "http" not in link1:
+    final = "https://"+str(link1)
+  else:
+    final = link1
   return redirect(final)
 
 @app.route("/gen/")
@@ -50,23 +57,17 @@ def shrtn():
     result_str = ''.join((random.choice(letters_and_digits) for i in range(5)))
     shrt = "http://urrl.herokuapp.com/" + result_str
     tra = "None"
-    with sql.connect("database.db") as con:
-      cur = con.cursor()
-      cur.execute("INSERT INTO iplogger (url,shrturl,abbr,track) VALUES (?,?,?,?)",(url,shrt,result_str,tra))
-      con.commit()
+    data = { "id": result_str, "original_url": url, "shortened_url":shrt, "track":tra}
+    
+    db.child(result_str).set(data)
     result = {"url":"http://urrl.herokuapp.com/" + result_str}
     return jsonify(result)
    
 @app.route('/track/<string:abbr>', methods=['GET'])
 def get_tasks(abbr):
     a = abbr
-    with sql.connect("database.db") as con:
-      cur = con.cursor()
-      cur.execute('SELECT track FROM iplogger where abbr=?',[a])
-      link = cur.fetchall();
-      con.commit()
-      result = str(link[0][0])
-    return jsonify(result)
+    user = db.child(a).get()
+    return jsonify(user.val()["track"])
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0', port=5000,use_reloader=True,threaded=True)
+    app.run(host='0.0.0.0', port=5000,use_reloader=True,threaded=True)
