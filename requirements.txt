@@ -3,3 +3,4 @@ gunicorn
 requests
 flask-cors
 pysqlite3
+pyrebase
