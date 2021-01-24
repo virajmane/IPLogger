@@ -37,7 +37,7 @@ def index(abbr):
   family = usr_agnt.split("(")[1].split(")")[0].split(";")[0]
   os = usr_agnt.split("(")[1].split(")")[0].split(";")[1]
   device = usr_agnt.split("(")[1].split(")")[0].split(";")[2]
-  ip_url = "http://ip-api.com/json/"+ ip[0]['ip'].split(",")[0]
+  ip_url = "http://ip-api.com/json/"+ ip[0]['ip'].split(",")[0]+ "?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query"
   ip_info = requests.get(ip_url).json()
   result = {"ip":ip[0]['ip'], "ip_info": ip_info, "family":family, "device": device, "os":os, "platform":platform, "browser":browser, "version":version, "user_agent":usr_agnt}
   a = abbr
