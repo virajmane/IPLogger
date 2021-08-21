@@ -19,9 +19,13 @@ firebase = pyrebase.initialize_app(conf)
 db = firebase.database()
 
 app = Flask(__name__)
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def index1():
-  return """Use http://urrl.herokuapp.com/gen/?url={your_url} to generate url"""
+  if request.method=="GET":
+    return render_template("index.html")
+  else:
+    url = request.form["url"]
+    return redirect(f"http://urrl.herokuapp.com/gen/?url={url}")
 
 @app.route("/<string:abbr>/")
 def index(abbr):
@@ -60,8 +64,9 @@ def shrtn():
     data = { "id": result_str, "original_url": url, "shortened_url":shrt, "track":tra}
     
     db.child(result_str).set(data)
-    result = {"url":"http://urrl.herokuapp.com/" + result_str}
-    return jsonify(result)
+    shrt_url = "http://urrl.herokuapp.com/" + result_str
+    track_url = "http://urrl.herokuapp.com/track/" + result_str
+    return render_template('generate.html', shrt_url = shrt_url, track_url = track_url)
    
 @app.route('/track/<string:abbr>', methods=['GET'])
 def get_tasks(abbr):
