@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, redirect, url_for, _request_ctx_stack
+from flask import Flask, jsonify, request, redirect, url_for, _request_ctx_stack, render_template
 import requests
 import random
 import string
