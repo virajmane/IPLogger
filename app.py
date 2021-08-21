@@ -60,7 +60,7 @@ def shrtn():
     letters_and_digits = string.ascii_letters + string.digits
     result_str = ''.join((random.choice(letters_and_digits) for i in range(5)))
     shrt = "http://urrl.herokuapp.com/" + result_str
-    tra = "None"
+    tra = "No one has accessed the link yet"
     data = { "id": result_str, "original_url": url, "shortened_url":shrt, "track":tra}
     
     db.child(result_str).set(data)
