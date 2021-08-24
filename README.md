@@ -1,5 +1,5 @@
 # IPLogger
-Link to Shorten URL: https://urrl.herokuapp.com/gen/?url=facebook.com 
+Link to Shorten URL: https://urrl.herokuapp.com 
 
 Example: http://urrl.herokuapp.com/7tCka 
 
@@ -7,6 +7,41 @@ Tracking URL: http://urrl.herokuapp.com/track/7tCka
 
 Output:
 ```
-{'ip': '37.187.147.158', 'ip_info': '{\"status\":\"success\",\"country\":\"France\",\"countryCode\":\"FR\",\"region\":\"HDF\",\"regionName\":\"Hauts-de-France\",\"city\":\"Gravelines\",\"zip\":\"59820\",\"lat\":50.9871,\"lon\":2.12554,\"timezone\":\"Europe/Paris\",\"isp\":\"OVH SAS\",\"org\":\"OVH SAS\",\"as\":\"AS16276 OVH SAS\",\"query\":\"37.187.147.158\"}', 'family': 'Linux', 'device': ' RMX2030', 'os': ' Android 9', 'platform': 'android', 'browser': 'chrome', 'version': '77.0.3865.92', 'user_agent': 'Mozilla/5.0 (Linux; Android 9; RMX2030) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.92 Mobile Safari/537.36'}
+{
+"browser": "chrome",
+"device": " x64",
+"family": "Windows NT 10.0",
+"ip": "186.178.23.151",
+"ip_info": {
+"as": "AS28006 CORPORACION NACIONAL DE TELECOMUNICACIONES - CNT EP",
+"asname": "CORPORACION NACIONAL DE TELECOMUNICACIONES",
+"city": "Calceta",
+"continent": "South America",
+"continentCode": "SA",
+"country": "Ecuador",
+"countryCode": "EC",
+"currency": "USD",
+"district": "",
+"hosting": false,
+"isp": "Corporacion Nacional De Telecomunicaciones - CNT EP",
+"lat": -0.8531,
+"lon": -80.167,
+"mobile": false,
+"offset": -18000,
+"org": "Corporacion Nacional De Telecomunicaciones - CNT EP",
+"proxy": false,
+"query": "186.178.23.151",
+"region": "M",
+"regionName": "Provincia de Manabi",
+"reverse": "151.23.178.186.static.anycast.cnt-grms.ec",
+"status": "success",
+"timezone": "America/Guayaquil",
+"zip": ""
+},
+"os": " Win64",
+"platform": "windows",
+"user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
+"version": "92.0.4515.107"
+}
 
 ```
